@@ -24,10 +24,10 @@ public abstract class RedisDecoder<T> extends ByteToMessageDecoder
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception
     {
-        if ('-' == in.getByte(0)) {
-            result.setData(new Either<T, RedisError>(null, new RedisError(in.toString(Charset.forName("UTF-8")))));
+        if (RedisError.ERROR_START_BYTE == in.getByte(0)) {
+            result.setData(Either.getRight(new RedisError(in.toString(Charset.forName("UTF-8")))));
         } else {
-            result.setData(new Either<T, RedisError>(parse(in.toString(Charset.forName("UTF-8"))), null));
+            result.setData(Either.getLeft(parse(in.toString(Charset.forName("UTF-8")))));
         }
     }
 

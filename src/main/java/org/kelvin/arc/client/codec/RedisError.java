@@ -5,7 +5,7 @@ package org.kelvin.arc.client.codec;
  */
 public class RedisError
 {
-    public static final byte ERROR_START_CHAR = '-';
+    public static final byte ERROR_START_BYTE = '-';
     private final String errorString;
 
     public RedisError(String errorString)

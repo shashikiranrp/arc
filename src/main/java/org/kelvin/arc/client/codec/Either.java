@@ -11,7 +11,17 @@ public class Either<L, R>
     final Optional<L> leftObj;
     final Optional<R> rightObj;
 
-    public Either(L leftObj, R rightObj)
+    public static <L, R> Either<L, R> getLeft(L leftObj)
+    {
+        return new Either<>(leftObj, null);
+    }
+
+    public static <L,R> Either<L, R> getRight(R rightObj)
+    {
+        return new Either<>(null, rightObj);
+    }
+
+    private Either(L leftObj, R rightObj)
     {
         this.leftObj = Optional.ofNullable(leftObj);
         this.rightObj = Optional.ofNullable(rightObj);

@@ -45,11 +45,15 @@ public class NettyBasedRedisService implements RedisCacheService
     }
 
     @Override
-    public ListenableFuture<Boolean> keyExists(String key)
+    public ListenableFuture<Boolean> keyExists(final String key)
     {
         final GenericResult<Either<Boolean, RedisError>> result = new GenericResult<>();
         ChannelFuture cf = getChannelForKey(key, new BooleanDecoder(result));
         cf.addListener((connectionFuture) -> {
+            if (cf.isDone() && null != cf.cause()) {
+                result.setError(cf.cause());
+                return;
+            }
             cf.channel()
                     .pipeline()
                     .writeAndFlush(Arrays.asList("EXISTS", key));
@@ -96,7 +100,7 @@ public class NettyBasedRedisService implements RedisCacheService
     }
 
     @Override
-    public void shutdown()
+    public void close()
     {
         REDIS_INSTANCE_CHANNELS.shutdownGroup();
     }

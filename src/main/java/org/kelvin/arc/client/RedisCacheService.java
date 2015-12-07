@@ -6,7 +6,7 @@ import org.kelvin.arc.type.*;
 /**
  * @author <a href="mailto:shasrp@yahoo-inc.com">Shashikiran</a>
  */
-public interface RedisCacheService
+public interface RedisCacheService extends AutoCloseable
 {
     ListenableFuture<Boolean> keyExists(String key);
 
@@ -19,6 +19,4 @@ public interface RedisCacheService
     RedisSet getSet(String key);
 
     RedisSortedSet getSortedSet(String key);
-
-    void shutdown();
 }
